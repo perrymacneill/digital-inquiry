@@ -8,14 +8,10 @@ import { RenderPass } from './postprocessing/RenderPass';
 import { ShaderPass } from './postprocessing/ShaderPass';
 import { EffectComposer } from './postprocessing/EffectComposer';
 
-var container, scene, camera, renderer, composer, light;
+let container, scene, camera, renderer, composer, light;
 
-var shaderTime = 0;
-var badTVParams, badTVPass;
-var staticParams, staticPass;
-var rgbParams, rgbPass;
-var filmParams, filmPass;
-var renderPass, copyPass;
+let shaderTime = 0;
+let badTVPass, staticPass, rgbPass, filmPass, renderPass, copyPass;
 
 init();
 animate();
@@ -24,9 +20,9 @@ function init() {
   scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x000000, 1, 1000);
 
-  var SCREEN_WIDTH = window.innerWidth,
+  const SCREEN_WIDTH = window.innerWidth,
     SCREEN_HEIGHT = window.innerHeight;
-  var VIEW_ANGLE = 45,
+  const VIEW_ANGLE = 45,
     ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
     NEAR = 0.1,
     FAR = 20000;
@@ -57,11 +53,6 @@ function init() {
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
 
-  // badTVPass.renderToScreen = true;
-  // rgbPass.renderToScreen = true;
-  // filmPass.renderToScreen = true;
-  // staticPass.renderToScreen = true;
-
   composer.addPass(filmPass);
   composer.addPass(badTVPass);
   composer.addPass(rgbPass);
@@ -77,46 +68,46 @@ function init() {
 }
 
 function addToCanvas(items) {
-  for (var i = 0; i <= items.length; i++) {
+  for (let i = 0; i <= items.length; i++) {
     setObjects(items, i);
   }
 }
 
 function setObjects(items, i) {
-  setTimeout(function() {
+  setTimeout(() => {
     if (i === items.length) {
-      for (var j = 0; j < items.length; j++) {
-        var meshObject = scene.getObjectByName('mesh' + j);
+      for (let j = 0; j < items.length; j++) {
+        let meshObject = scene.getObjectByName('mesh' + j);
         scene.remove(meshObject);
       }
       addToCanvas(items);
       return;
     }
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
+    let canvas = document.createElement('canvas');
+    let context = canvas.getContext('2d');
     context.font = "16px Arial";
     context.fillStyle = "white";
     if (i !== 0) {
       context.textAlign = 'right';
     }
-    var item = items[i];
+    let item = items[i];
     if (i === 0) {
       context.fillText(item, 15, 20 * (i + 1));
     } else {
       context.fillText(item, 290, 20 * (i + 1));
     }
 
-    var texture = new THREE.Texture(canvas);
+    let texture = new THREE.Texture(canvas);
     texture.minFilter = THREE.LinearFilter;
     texture.needsUpdate = true;
 
-    var material = new THREE.MeshBasicMaterial({
+    let material = new THREE.MeshBasicMaterial({
       map: texture,
       side: THREE.DoubleSide
     });
     material.transparent = true;
 
-    var mesh = new THREE.Mesh(
+    let mesh = new THREE.Mesh(
       new THREE.PlaneGeometry(canvas.width, canvas.height),
       material
     );
