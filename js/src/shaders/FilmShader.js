@@ -20,7 +20,7 @@
  * http://creativecommons.org/licenses/by/3.0/
  */
 
-export FilmShader = {
+let FilmShader = {
 
 	uniforms: {
 
@@ -102,3 +102,5 @@ export FilmShader = {
 	].join( "\n" )
 
 };
+
+export {FilmShader};

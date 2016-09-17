@@ -10,7 +10,7 @@
  * angle: shift angle in radians
  */
 
-export RGBShiftShader = {
+let RGBShiftShader = {
 
 	uniforms: {
 
@@ -54,3 +54,4 @@ export RGBShiftShader = {
 	].join( "\n" )
 
 };
+ export {RGBShiftShader};

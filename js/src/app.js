@@ -1,3 +1,13 @@
+import * as THREE from 'three';
+import { BadTVShader } from './shaders/BadTVShader';
+import { CopyShader } from './shaders/CopyShader';
+import { FilmShader } from './shaders/FilmShader';
+import { RGBShiftShader } from './shaders/RGBShiftShader';
+import { StaticShader } from './shaders/StaticShader';
+import { RenderPass } from './postprocessing/RenderPass';
+import { ShaderPass } from './postprocessing/ShaderPass';
+import { EffectComposer } from './postprocessing/EffectComposer';
+
 var container, scene, camera, renderer, composer, light;
 
 var shaderTime = 0;
@@ -7,6 +17,8 @@ var rgbParams, rgbPass;
 var filmParams, filmPass;
 var renderPass, copyPass;
 
+init();
+animate();
 
 function init() {
   scene = new THREE.Scene();
@@ -31,19 +43,24 @@ function init() {
   container = document.getElementById('container');
   container.appendChild(renderer.domElement);
 
-  renderPass = new THREE.RenderPass(scene, camera);
-  badTVPass = new THREE.ShaderPass(THREE.BadTVShader);
-  rgbPass = new THREE.ShaderPass(THREE.RGBShiftShader);
-  filmPass = new THREE.ShaderPass(THREE.FilmShader);
-  staticPass = new THREE.ShaderPass(THREE.StaticShader);
-  copyPass = new THREE.ShaderPass(THREE.CopyShader);
+  renderPass = new RenderPass(scene, camera);
+  badTVPass = new ShaderPass(BadTVShader);
+  rgbPass = new ShaderPass(RGBShiftShader);
+  filmPass = new ShaderPass(FilmShader);
+  staticPass = new ShaderPass(StaticShader);
+  copyPass = new ShaderPass(CopyShader);
 
   scene.add(new THREE.AmbientLight(0x222222));
   light = new THREE.DirectionalLight(0xffffff);
   light.position.set(1, 1, 1);
   scene.add(light);
-  composer = new THREE.EffectComposer(renderer);
-  composer.addPass(new THREE.RenderPass(scene, camera));
+  composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+
+  // badTVPass.renderToScreen = true;
+  // rgbPass.renderToScreen = true;
+  // filmPass.renderToScreen = true;
+  // staticPass.renderToScreen = true;
 
   composer.addPass(filmPass);
   composer.addPass(badTVPass);
@@ -111,9 +128,9 @@ function setObjects(items, i) {
 
 function animate() {
   shaderTime += 0.1;
-  badTVPass.uniforms['time'].value = shaderTime;
-  filmPass.uniforms['time'].value = shaderTime;
-  staticPass.uniforms['time'].value = shaderTime;
+  badTVPass.material.uniforms['time'].value = shaderTime;
+  filmPass.material.uniforms['time'].value = shaderTime;
+  staticPass.material.uniforms['time'].value = shaderTime;
   requestAnimationFrame(animate);
   composer.render(0.1);
 }

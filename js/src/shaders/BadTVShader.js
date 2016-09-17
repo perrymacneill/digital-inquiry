@@ -36,7 +36,7 @@
  *
  */
 
-THREE.BadTVShader = {
+let BadTVShader = {
 	uniforms: {
 		"tDiffuse": 	{ type: "t", value: null },
 		"time": 		{ type: "f", value: 0.0 },
@@ -135,3 +135,5 @@ THREE.BadTVShader = {
 	].join("\n")
 
 };
+
+export {BadTVShader};

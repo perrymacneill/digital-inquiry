@@ -1,8 +1,9 @@
-/**
- * @author alteredq / http://alteredqualia.com/
- */
+import * as THREE from 'three';
+import { CopyShader } from '../shaders/CopyShader';
+import { ShaderPass } from './ShaderPass';
+import { MaskPass, ClearMaskPass } from './MaskPass';
 
-THREE.EffectComposer = function ( renderer, renderTarget ) {
+let EffectComposer = function ( renderer, renderTarget ) {
 
 	this.renderer = renderer;
 
@@ -27,14 +28,14 @@ THREE.EffectComposer = function ( renderer, renderTarget ) {
 
 	this.passes = [];
 
-	if ( THREE.CopyShader === undefined )
+	if (CopyShader === undefined )
 		console.error( "THREE.EffectComposer relies on THREE.CopyShader" );
 
-	this.copyPass = new THREE.ShaderPass( THREE.CopyShader );
+	this.copyPass = new ShaderPass(CopyShader);
 
 };
 
-THREE.EffectComposer.prototype = {
+EffectComposer.prototype = {
 
 	swapBuffers: function() {
 
@@ -91,11 +92,11 @@ THREE.EffectComposer.prototype = {
 
 			}
 
-			if ( pass instanceof THREE.MaskPass ) {
+			if ( pass instanceof MaskPass ) {
 
 				maskActive = true;
 
-			} else if ( pass instanceof THREE.ClearMaskPass ) {
+			} else if ( pass instanceof ClearMaskPass ) {
 
 				maskActive = false;
 
@@ -134,3 +135,5 @@ THREE.EffectComposer.prototype = {
 	}
 
 };
+
+export {EffectComposer};

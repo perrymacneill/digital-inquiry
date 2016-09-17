@@ -4,7 +4,7 @@
  * Full-screen textured quad shader
  */
 
-export CopyShader = {
+let CopyShader = {
 
 	uniforms: {
 
@@ -44,3 +44,5 @@ export CopyShader = {
 	].join( "\n" )
 
 };
+
+export {CopyShader};
